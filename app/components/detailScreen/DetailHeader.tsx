@@ -1,28 +1,48 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../../theme/theme';
 import GradientBGIcon from './detailsHeaderCompontents.tsx/GradoemtBGIcon';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useStore} from '../../store/store';
+import {Bean, Coffee} from '../../types/general';
 
 interface HeaderBarProps {
   title?: string;
+  product: Coffee | Bean;
 }
 
-const DetailHeader = ({title}: HeaderBarProps) => {
+const DetailHeader = ({title, product}: HeaderBarProps) => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<any, 'HomeScreen'>>();
+  const toggleFavorites = useStore(state => state.toggleToFavoritesList);
+  const favoriteList = useStore(state => state.FavoritesList);
+
+  const isFavorite = favoriteList.some(item => item.id == product.id);
+
   return (
     <View>
       <View style={styles.HeaderContainer}>
-        <GradientBGIcon
-          name="left"
-          color={COLORS.primaryLightGreyHex}
-          size={FONTSIZE.size_16}
-        />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('HomeScreen');
+          }}>
+          <GradientBGIcon
+            name="left"
+            color={COLORS.primaryLightGreyHex}
+            size={FONTSIZE.size_16}
+          />
+        </TouchableOpacity>
         <Text>{title}</Text>
-        <GradientBGIcon
-          name="like"
-          // color={favourite ? COLORS.primaryRedHex : COLORS.primaryLightGreyHex}
-          color={COLORS.primaryRedHex}
-          size={FONTSIZE.size_16}
-        />
+        <TouchableOpacity onPress={() => toggleFavorites(product)}>
+          <GradientBGIcon
+            name="like"
+            color={
+              isFavorite ? COLORS.primaryRedHex : COLORS.primaryLightGreyHex
+            }
+            size={FONTSIZE.size_16}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );

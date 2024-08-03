@@ -8,13 +8,10 @@ const CartScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Button
-        title="Remove All Products"
-        onPress={removeAll} // Correctly call the removeAllProducts function
-      />
+      <Button title="Remove All Products" onPress={() => removeAll} />
       {cartList.map(item => (
         <Text key={item.id}>
-          {item.newProduct.name} + {item.quantity}
+          {item.quantity} + {item.product.name} + {item.price}
         </Text>
       ))}
     </View>

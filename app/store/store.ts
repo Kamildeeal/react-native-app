@@ -6,7 +6,10 @@ import BeansData from '../data/BeansData';
 import {Bean, Coffee, StoreState} from '../types/general';
 
 interface CartItem {
-  newProduct: Coffee | Bean;
+  product: Coffee | Bean;
+  size: string;
+  price: string;
+  currency: string;
   quantity: number;
 }
 
@@ -19,15 +22,22 @@ export const useStore = create<StoreState>()(
       FavoritesList: [],
       CartList: [],
       OrderHistoryList: [],
-
-      addProductToCart: (newProduct: Coffee | Bean) => {
+      addProductToCart: (
+        product: Coffee | Bean,
+        size: string,
+        price: string,
+        currency: string,
+      ) => {
         set(state => {
           const existingItemIndex = state.CartList.findIndex(
-            item => item.newProduct && item.newProduct.id === newProduct.id,
+            item =>
+              item.product &&
+              item.product.id === product.id &&
+              item.size === size,
           );
 
           if (existingItemIndex > -1) {
-            // product is already in cart
+            // produkt jest już w koszyku
             const updatedCartList = state.CartList.map((item, index) => {
               if (index === existingItemIndex) {
                 return {...item, quantity: item.quantity + 1};
@@ -36,12 +46,14 @@ export const useStore = create<StoreState>()(
             });
             return {CartList: updatedCartList};
           } else {
-            // if not in cart, add it
+            // jeśli nie ma w koszyku, dodaj go
             const newItem: CartItem = {
-              newProduct,
+              product,
+              size,
+              price,
+              currency,
               quantity: 1,
             };
-            console.log('Adding new item to CartList:', newItem);
             return {CartList: [...state.CartList, newItem]};
           }
         });
@@ -51,6 +63,26 @@ export const useStore = create<StoreState>()(
           // Clear the CartList
           CartList: [],
         }));
+      },
+      toggleToFavoritesList: (product: Coffee | Bean) => {
+        set(state => {
+          const isFavorite = state.FavoritesList.some(
+            item => item.id === product.id,
+          );
+
+          let updatedFavoritesList;
+          if (isFavorite) {
+            // remove product from favorites
+            updatedFavoritesList = state.FavoritesList.filter(
+              item => item.id !== product.id,
+            );
+          } else {
+            // add product to favorites
+            updatedFavoritesList = [...state.FavoritesList, product];
+          }
+
+          return {FavoritesList: updatedFavoritesList};
+        });
       },
     }),
     {

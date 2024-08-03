@@ -5,8 +5,14 @@ export type StoreState = {
   CartPrice: number;
   FavoritesList: any[];
   OrderHistoryList: any[];
-  addProductToCart: (product: any) => void;
-  removeAllProducts: (product: any) => void;
+  addProductToCart: (
+    product: Coffee | Bean,
+    size: string,
+    price: string,
+    currency: string,
+  ) => void;
+  removeAllProducts: (product: Coffee | Bean) => void;
+  toggleToFavoritesList: (product: Coffee | Bean) => void;
 };
 
 export type CartItem = {
