@@ -17,7 +17,7 @@ const HeaderBar = ({title}: HeaderBarProps) => {
           color={COLORS.primaryLightGreyHex}
           size={FONTSIZE.size_16}
         />
-        {title}
+        <Text style={styles.HeaderText}>{title}</Text>
         <ProfilePic />
       </View>
     </View>
@@ -32,11 +32,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   HeaderText: {
-    fontSize: FONTSIZE.size_28,
+    fontSize: FONTSIZE.size_20,
     fontFamily: FONTFAMILY.poppins_semibold,
     color: COLORS.primaryWhiteHex,
-    paddingLeft: SPACING.space_30,
-    maxWidth: 250,
   },
 });
 

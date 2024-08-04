@@ -1,22 +1,36 @@
+import {ImageSourcePropType} from 'react-native';
+
 export type StoreState = {
   CartList: any[];
-  CoffeeList: Coffee[];
-  BeanList: Bean[];
+  CoffeeList: Product[];
+  BeanList: Product[];
   CartPrice: number;
   FavoritesList: any[];
   OrderHistoryList: any[];
-  addProductToCart: (
-    product: Coffee | Bean,
-    size: string,
-    price: string,
-    currency: string,
-  ) => void;
+  addProductToCart: (product: Product, size: string) => void;
   removeAllProducts: (product: Coffee | Bean) => void;
   toggleToFavoritesList: (product: Coffee | Bean) => void;
 };
 
+export type Product = {
+  id: string;
+  name: string;
+  description: string;
+  roasted: string;
+  imagelink_square: any;
+  imagelink_portrait: any;
+  ingredients: string;
+  special_ingredient: string;
+  prices: Array<{size: string; price: string; currency: string}>;
+  average_rating: number;
+  ratings_count: string;
+  favourite: boolean;
+  type: string;
+  index: number;
+};
+
 export type CartItem = {
-  newProduct: Coffee | Bean;
+  newProduct: Product;
   quantity: number;
 };
 
@@ -29,7 +43,7 @@ export type Coffee = {
   imagelink_portrait: any;
   ingredients: string;
   special_ingredient: string;
-  prices: {size: string; price: string; currency: string}[];
+  prices: Array<{size: string; price: string; currency: string}>;
   average_rating: number;
   ratings_count: string;
   favourite: boolean;
@@ -46,7 +60,7 @@ export type Bean = {
   imagelink_portrait: any;
   ingredients: string;
   special_ingredient: string;
-  prices: {size: string; price: string; currency: string}[];
+  prices: Array<{size: string; price: string; currency: string}>;
   average_rating: number;
   ratings_count: string;
   favourite: boolean;

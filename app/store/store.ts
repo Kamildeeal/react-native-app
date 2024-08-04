@@ -5,13 +5,28 @@ import CoffeeData from '../data/CoffeeData';
 import BeansData from '../data/BeansData';
 import {Bean, Coffee, StoreState} from '../types/general';
 
-interface CartItem {
-  product: Coffee | Bean;
-  size: string;
-  price: string;
-  currency: string;
+type Product = {
+  id: string;
+  name: string;
+  description: string;
+  roasted: string;
+  imagelink_square: string;
+  imagelink_portrait: string;
+  ingredients: string;
+  special_ingredient: string;
+  prices: Array<{size: string; price: string; currency: string}>;
+  average_rating: number;
+  ratings_count: string;
+  favourite: boolean;
+  type: string;
+  index: number;
+};
+
+type CartItem = {
+  product: Product;
   quantity: number;
-}
+  size: string;
+};
 
 export const useStore = create<StoreState>()(
   persist(
@@ -22,42 +37,58 @@ export const useStore = create<StoreState>()(
       FavoritesList: [],
       CartList: [],
       OrderHistoryList: [],
-      addProductToCart: (
-        product: Coffee | Bean,
-        size: string,
-        price: string,
-        currency: string,
-      ) => {
+
+      addProductToCart: (product: Product, size: string) => {
         set(state => {
           const existingItemIndex = state.CartList.findIndex(
-            item =>
-              item.product &&
-              item.product.id === product.id &&
-              item.size === size,
+            item => item.product && item.product.id === product.id,
           );
 
           if (existingItemIndex > -1) {
-            // produkt jest już w koszyku
+            // Product is already in the cart, update the quantity for the selected size
             const updatedCartList = state.CartList.map((item, index) => {
               if (index === existingItemIndex) {
-                return {...item, quantity: item.quantity + 1};
+                const updatedItem = {...item};
+                if (item.size0 === size) {
+                  updatedItem.quantitySize0 += 1;
+                } else if (item.size1 === size) {
+                  updatedItem.quantitySize1 += 1;
+                } else if (item.size2 === size) {
+                  updatedItem.quantitySize2 += 1;
+                } else {
+                  // If the size doesn't exist, add it to the first empty slot
+                  if (!item.size0) {
+                    updatedItem.size0 = size;
+                    updatedItem.quantitySize0 = 1;
+                  } else if (!item.size1) {
+                    updatedItem.size1 = size;
+                    updatedItem.quantitySize1 = 1;
+                  } else if (!item.size2) {
+                    updatedItem.size2 = size;
+                    updatedItem.quantitySize2 = 1;
+                  }
+                }
+                return updatedItem;
               }
               return item;
             });
             return {CartList: updatedCartList};
           } else {
-            // jeśli nie ma w koszyku, dodaj go
-            const newItem: CartItem = {
+            // Add new product to the cart
+            const newItem: any = {
               product,
-              size,
-              price,
-              currency,
-              quantity: 1,
+              quantitySize0: size === product.prices[0].size ? 1 : 0,
+              size0: size === product.prices[0].size ? size : '',
+              quantitySize1: size === product.prices[1]?.size ? 1 : 0,
+              size1: size === product.prices[1]?.size ? size : '',
+              quantitySize2: size === product.prices[2]?.size ? 1 : 0,
+              size2: size === product.prices[2]?.size ? size : '',
             };
             return {CartList: [...state.CartList, newItem]};
           }
         });
       },
+
       removeAllProducts: () => {
         set(() => ({
           // Clear the CartList

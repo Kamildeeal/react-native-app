@@ -3,6 +3,7 @@ import {
   Dimensions,
   ImageBackground,
   ImageProps,
+  ImageSourcePropType,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -17,12 +18,12 @@ import {
   SPACING,
 } from '../../theme/theme';
 import CustomIcon from '../CustomIcon';
-import {Bean, Coffee} from '../../types/general';
+import {Bean, Coffee, Product} from '../../types/general';
 import BGIcon from './BGIcon';
 
 interface BeanCardProps {
   bean: Bean;
-  handleAddToCart: (product: Coffee | Bean) => void;
+  handleAddToCart: (product: Product, size: string) => void;
 }
 
 const CARD_WIDTH = Dimensions.get('window').width * 0.32;
@@ -35,7 +36,7 @@ const BeanCard = ({bean, handleAddToCart}: BeanCardProps) => {
       style={styles.CardLinearGradientContainer}
       colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}>
       <ImageBackground
-        source={bean.imagelink_square}
+        source={bean.imagelink_square as ImageSourcePropType}
         style={styles.CardImageBG}
         resizeMode="cover">
         <View style={styles.CardRatingContainer}>
@@ -53,7 +54,8 @@ const BeanCard = ({bean, handleAddToCart}: BeanCardProps) => {
         <Text style={styles.CardPriceCurrency}>
           $ <Text style={styles.CardPrice}>{bean.prices[2].price}</Text>
         </Text>
-        <TouchableOpacity onPress={() => handleAddToCart(bean)}>
+        <TouchableOpacity
+          onPress={() => handleAddToCart(bean, bean.prices[2].size)}>
           <BGIcon
             name={'add'}
             color={COLORS.primaryWhiteHex}

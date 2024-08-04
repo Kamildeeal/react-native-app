@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {useStore} from '../store/store';
-import {Bean, Coffee, filteredCoffeeProps} from '../types/general';
+import {Bean, Coffee, filteredCoffeeProps, Product} from '../types/general';
 import {
   BORDERRADIUS,
   COLORS,
@@ -82,8 +82,8 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
 
   const tabBarHeight = useBottomTabBarHeight();
 
-  const handleAddToCart = (product: Coffee | Bean) => {
-    addProductToCart(product);
+  const handleAddToCart = (product: Product, size: string) => {
+    addProductToCart(product, size);
   };
 
   return (

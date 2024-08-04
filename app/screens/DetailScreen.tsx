@@ -1,6 +1,7 @@
 import {
   Dimensions,
   ImageBackground,
+  ImageSourcePropType,
   ScrollView,
   StyleSheet,
   Text,
@@ -16,25 +17,43 @@ import CustomIcon from '../components/CustomIcon';
 import {useStore} from '../store/store';
 
 interface DetailsProps {
-  item: Coffee | Bean;
+  item: Product;
 }
 
 type RouteParams = {
   params: DetailsProps;
 };
 
+type Product = {
+  id: string;
+  name: string;
+  description: string;
+  roasted: string;
+  imagelink_square: string;
+  imagelink_portrait: string;
+  ingredients: string;
+  special_ingredient: string;
+  prices: Array<{size: string; price: string; currency: string}>;
+  average_rating: number;
+  ratings_count: string;
+  favourite: boolean;
+  type: string;
+  index: number;
+};
+
 const {height: screenHeight} = Dimensions.get('window');
 
 const DetailScreen = () => {
   const route = useRoute<RouteProp<RouteParams, 'params'>>();
-  const addProductToCart = useStore(state => state.addProductToCart);
+
   const {item} = route.params;
   const [selectedSize, setSelectedSize] = useState(item.prices[0]);
+  const addProductToCart = useStore(state => state.addProductToCart);
 
   return (
     <ScrollView style={styles.ScreenContainer}>
       <ImageBackground
-        source={item.imagelink_square}
+        source={item.imagelink_square as ImageSourcePropType}
         style={styles.ImageContainer}>
         <DetailHeader product={item} />
         <View style={styles.OpacityBgContainer}>
@@ -115,14 +134,7 @@ const DetailScreen = () => {
             </View>
           </View>
           <TouchableOpacity
-            onPress={() =>
-              addProductToCart(
-                item,
-                selectedSize.size,
-                selectedSize.price,
-                selectedSize.currency,
-              )
-            }>
+            onPress={() => addProductToCart(item, selectedSize.size)}>
             <Text style={styles.ButtonAddToCart}>Add to Cart</Text>
           </TouchableOpacity>
         </View>
