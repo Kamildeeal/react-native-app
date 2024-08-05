@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text, View} from 'react-native';
 import tw from '../twrnc';
 import {NavigationContainer} from '@react-navigation/native';
@@ -7,8 +7,11 @@ import HomeScreen from './screens/HomeScreen';
 import DetailScreen from './screens/DetailScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import TabNavigator from './navigators/TabNavigator';
+import SplashScreen from 'react-native-splash-screen';
 
 const Stack = createNativeStackNavigator();
+
+//add splash screen
 
 const App = () => {
   return (

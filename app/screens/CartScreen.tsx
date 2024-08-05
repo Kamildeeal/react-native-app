@@ -3,12 +3,13 @@ import {
   FlatList,
   Image,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useStore} from '../store/store';
 import {
   BORDERRADIUS,
@@ -20,85 +21,77 @@ import {
 import HeaderBar from '../components/header/HeaderBar';
 import LinearGradient from 'react-native-linear-gradient';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
-import CustomIcon from '../components/CustomIcon';
+
 import CartQuantity from '../components/cartScreen/CartQuantity';
+import SingleQuantityCartItem from '../components/cartScreen/SingleQuantityCartItem';
+import MultiQuantityCartItem from '../components/cartScreen/MultiQuantityCartItem';
+import PaymentFooter from '../components/cartScreen/FooterCartScreen';
 
 const CartScreen = () => {
   const cartList = useStore(state => state.CartList);
   const removeAll = useStore(state => state.removeAllProducts);
   const tabBarHeight = useBottomTabBarHeight();
 
-  const checkSize = (size: string) => {
-    switch (size) {
-      case 'S':
-        return 0;
-      case 'M':
-        return 1;
-      case 'L':
-        return 2;
-      default:
-        return 0;
-    }
+  const copyOfCartList = cartList.map(item => ({...item}));
+
+  const hasOnlyOneNonZeroQuantity = copyOfCartList.every(item => {
+    const quantities = [
+      item.quantitySize0,
+      item.quantitySize1,
+      item.quantitySize2,
+    ];
+    const nonZeroQuantities = quantities.filter(quantity => quantity > 0);
+    return nonZeroQuantities.length === 1;
+  });
+
+  const checkIfOnlyOneNonZeroQuantity = (item: any) => {
+    const quantities = [
+      item.quantitySize0,
+      item.quantitySize1,
+      item.quantitySize2,
+    ];
+    const nonZeroQuantities = quantities.filter(quantity => quantity > 0);
+    return nonZeroQuantities.length === 1;
   };
 
+  const countCartPrice = useStore(state => state.countCartPrice);
+
+  useEffect(() => {
+    countCartPrice();
+  }, [cartList, countCartPrice]);
+
   return (
-    <ScrollView style={styles.mainContainer}>
-      {/* <Button title="Remove All Products" onPress={() => removeAll()} /> */}
-      <HeaderBar title={`Cart`} />
-      {cartList.map(item => (
-        <ScrollView key={item.product.id}>
-          <LinearGradient
-            start={{x: 0, y: 0}}
-            end={{x: 0, y: 1}}
-            colors={[COLORS.primaryGreyHex, COLORS.primaryDarkGreyHex]}
-            style={styles.CartContaier}>
-            <View style={{flexDirection: 'row'}}>
-              <Image
-                source={item.product.imagelink_square}
-                style={styles.CartItemImage}
-              />
-              <View style={{marginLeft: 20, paddingTop: 5}}>
-                <Text style={styles.ProductName}>{item.product.name}</Text>
-                <Text style={styles.PriceText}>
-                  {item.product.special_ingredient}
-                </Text>
-                <View style={styles.IconsTextContainer}>
-                  <Text style={styles.TypeText}>{item.product.roasted}</Text>
-                </View>
-              </View>
-            </View>
-            <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
-              <View style={{width: '100%'}}>
-                {item.size0 && (
-                  <CartQuantity
-                    item={item}
-                    sizeIndex={0}
-                    size={item.size0}
-                    quantity={item.quantitySize0}
-                  />
-                )}
-                {item.size1 && (
-                  <CartQuantity
-                    item={item}
-                    sizeIndex={1}
-                    size={item.size1}
-                    quantity={item.quantitySize1}
-                  />
-                )}
-                {item.size2 && (
-                  <CartQuantity
-                    item={item}
-                    sizeIndex={2}
-                    size={item.size2}
-                    quantity={item.quantitySize2}
-                  />
-                )}
-              </View>
-            </View>
-          </LinearGradient>
-        </ScrollView>
-      ))}
-    </ScrollView>
+    <View style={styles.mainContainer}>
+      <StatusBar backgroundColor={COLORS.primaryBlackHex} />
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.ScrollViewFlex}>
+        {/* <Button title="Remove All Products" onPress={() => removeAll()} /> */}
+        <HeaderBar title={`Cart`} />
+        {cartList.map(item => {
+          const isOnlyOneNonZeroQuantity = checkIfOnlyOneNonZeroQuantity(item);
+          return (
+            <ScrollView key={item.product.id}>
+              {isOnlyOneNonZeroQuantity ? (
+                <SingleQuantityCartItem
+                  item={item}
+                  isOnlyOneNonZeroQuantity={isOnlyOneNonZeroQuantity}
+                />
+              ) : (
+                <MultiQuantityCartItem
+                  item={item}
+                  isOnlyOneNonZeroQuantity={isOnlyOneNonZeroQuantity}
+                />
+              )}
+            </ScrollView>
+          );
+        })}
+        <PaymentFooter
+          buttonPressHandler={undefined}
+          buttonTitle={'Add to cart'}
+        />
+      </ScrollView>
+    </View>
   );
 };
 
@@ -107,6 +100,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: COLORS.primaryBlackHex,
+  },
+  ScrollViewFlex: {
+    flexGrow: 1,
   },
   CartContaier: {
     paddingHorizontal: 12,

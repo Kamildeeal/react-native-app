@@ -31,7 +31,7 @@ const TabNavigator = () => {
         name="HomeScreen"
         component={HomeScreen}
         options={{
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({focused, color, size}) => (
             <CustomIcon
               name="home"
               size={25}
@@ -45,7 +45,7 @@ const TabNavigator = () => {
         name="CartScreen"
         component={CartScreen}
         options={{
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({focused, color, size}) => (
             <CustomIcon
               name="cart"
               size={25}
@@ -60,7 +60,7 @@ const TabNavigator = () => {
         name="FavoritesScreen"
         component={FavoritesScreen}
         options={{
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({focused, color, size}) => (
             <CustomIcon
               name="like"
               size={25}
@@ -74,7 +74,7 @@ const TabNavigator = () => {
         name="OrderHistoryScreen"
         component={OrderHistoryScreen}
         options={{
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({focused, color, size}) => (
             <CustomIcon
               name="bell"
               size={25}
@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderTopColor: 'transparent',
     elevation: 0,
+    zIndex: 1000, // Add this line
   },
   BlurViewStyles: {
     position: 'absolute',

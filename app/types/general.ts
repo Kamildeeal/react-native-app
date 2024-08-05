@@ -4,12 +4,15 @@ export type StoreState = {
   CartList: any[];
   CoffeeList: Product[];
   BeanList: Product[];
-  CartPrice: number;
+  CartPrice: any;
   FavoritesList: any[];
   OrderHistoryList: any[];
   addProductToCart: (product: Product, size: string) => void;
-  removeAllProducts: (product: Coffee | Bean) => void;
+  removeAllProducts: () => void;
+  countCartPrice: () => void;
   toggleToFavoritesList: (product: Coffee | Bean) => void;
+  increaseQuantity: (productId: string, size: string) => void;
+  decreaseQuantity: (productId: string, size: string) => void;
 };
 
 export type Product = {

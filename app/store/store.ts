@@ -24,8 +24,12 @@ type Product = {
 
 type CartItem = {
   product: Product;
-  quantity: number;
-  size: string;
+  quantitySize0: number;
+  size0: string;
+  quantitySize1: number;
+  size1: string;
+  quantitySize2: number;
+  size2: string;
 };
 
 export const useStore = create<StoreState>()(
@@ -41,7 +45,7 @@ export const useStore = create<StoreState>()(
       addProductToCart: (product: Product, size: string) => {
         set(state => {
           const existingItemIndex = state.CartList.findIndex(
-            item => item.product && item.product.id === product.id,
+            item => item.product.id === product.id,
           );
 
           if (existingItemIndex > -1) {
@@ -75,7 +79,7 @@ export const useStore = create<StoreState>()(
             return {CartList: updatedCartList};
           } else {
             // Add new product to the cart
-            const newItem: any = {
+            const newItem: CartItem = {
               product,
               quantitySize0: size === product.prices[0].size ? 1 : 0,
               size0: size === product.prices[0].size ? size : '',
@@ -91,10 +95,11 @@ export const useStore = create<StoreState>()(
 
       removeAllProducts: () => {
         set(() => ({
-          // Clear the CartList
+          // clear the CartList
           CartList: [],
         }));
       },
+
       toggleToFavoritesList: (product: Coffee | Bean) => {
         set(state => {
           const isFavorite = state.FavoritesList.some(
@@ -113,6 +118,101 @@ export const useStore = create<StoreState>()(
           }
 
           return {FavoritesList: updatedFavoritesList};
+        });
+      },
+
+      increaseQuantity: (productId: string, size: string) => {
+        set(state => {
+          const updatedCartList = state.CartList.map(item => {
+            if (item.product.id === productId) {
+              const updatedItem = {...item};
+              if (item.size0 === size) {
+                updatedItem.quantitySize0 += 1;
+              } else if (item.size1 === size) {
+                updatedItem.quantitySize1 += 1;
+              } else if (item.size2 === size) {
+                updatedItem.quantitySize2 += 1;
+              }
+              return updatedItem;
+            }
+            // if there is no item with this id just retrun item
+            return item;
+          });
+          return {CartList: updatedCartList};
+        });
+      },
+      decreaseQuantity: (productId: string, size: string) => {
+        set(state => {
+          // map through CartList and update the quantities or remove items with quantity 0
+          const updatedCartList = state.CartList.map(item => {
+            if (item.product.id === productId) {
+              const updatedItem = {...item};
+              if (item.size0 === size) {
+                updatedItem.quantitySize0 -= 1;
+                if (updatedItem.quantitySize0 === 0) {
+                  // Clear the size if quantity is 0
+                  updatedItem.size0 = '';
+                }
+              } else if (item.size1 === size) {
+                updatedItem.quantitySize1 -= 1;
+                if (updatedItem.quantitySize1 === 0) {
+                  updatedItem.size1 = '';
+                }
+              } else if (item.size2 === size) {
+                updatedItem.quantitySize2 -= 1;
+                if (updatedItem.quantitySize2 === 0) {
+                  updatedItem.size2 = '';
+                }
+              }
+              return updatedItem;
+            }
+            return item;
+          });
+
+          // Remove items that have all quantities as 0
+          const filteredCartList = updatedCartList.filter(
+            item =>
+              item.quantitySize0 > 0 ||
+              item.quantitySize1 > 0 ||
+              item.quantitySize2 > 0,
+          );
+
+          return {CartList: filteredCartList};
+        });
+      },
+
+      countCartPrice: () => {
+        set(state => {
+          const cartPrice = state.CartList.reduce((total, item) => {
+            let itemPrice = 0;
+            if (item.size0 && item.quantitySize0 > 0) {
+              itemPrice +=
+                parseFloat(
+                  item.product.prices.find(
+                    (p: {size: any}) => p.size === item.size0,
+                  )?.price || '0',
+                ) * item.quantitySize0;
+            }
+            if (item.size1 && item.quantitySize1 > 0) {
+              itemPrice +=
+                parseFloat(
+                  item.product.prices.find(
+                    (p: {size: any}) => p.size === item.size1,
+                  )?.price || '0',
+                ) * item.quantitySize1;
+            }
+            if (item.size2 && item.quantitySize2 > 0) {
+              itemPrice +=
+                parseFloat(
+                  item.product.prices.find(
+                    (p: {size: any}) => p.size === item.size2,
+                  )?.price || '0',
+                ) * item.quantitySize2;
+            }
+            return total + itemPrice;
+          }, 0);
+          //set calculated price
+          return {CartPrice: cartPrice};
         });
       },
     }),
