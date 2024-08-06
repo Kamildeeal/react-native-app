@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: SPACING.space_20,
     paddingVertical: SPACING.space_24,
-    marginBottom: 42,
+    // marginBottom: 42,
   },
   PriceContainer: {
     alignItems: 'center',

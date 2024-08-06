@@ -79,11 +79,13 @@ const CartScreen = () => {
             })}
           </>
         )}
-        <FooterPayment
-          buttonTitle={'Pay'}
-          priceText={'Total Price'}
-          handleRouteToPayment={handleRouteToPayment}
-        />
+        <View style={{marginBottom: 42}}>
+          <FooterPayment
+            buttonTitle={'Pay'}
+            priceText={'Total Price'}
+            handleRouteToPayment={handleRouteToPayment}
+          />
+        </View>
       </ScrollView>
     </View>
   );
