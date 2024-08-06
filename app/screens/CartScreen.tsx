@@ -1,14 +1,4 @@
-import {
-  Button,
-  FlatList,
-  Image,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {useStore} from '../store/store';
 import {
@@ -19,33 +9,17 @@ import {
   SPACING,
 } from '../theme/theme';
 import HeaderBar from '../components/header/HeaderBar';
-import LinearGradient from 'react-native-linear-gradient';
-import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
-
-import CartQuantity from '../components/cartScreen/CartQuantity';
 import SingleQuantityCartItem from '../components/cartScreen/SingleQuantityCartItem';
 import MultiQuantityCartItem from '../components/cartScreen/MultiQuantityCartItem';
 import PaymentFooter from '../components/cartScreen/FooterCartScreen';
 import EmptyListAnimation from '../components/cartScreen/EmptyListAnimation';
+import {CartItem} from '../types/general';
 
 const CartScreen = () => {
+  // const removeAll = useStore(state => state.removeAllProducts);
   const cartList = useStore(state => state.CartList);
-  const removeAll = useStore(state => state.removeAllProducts);
-  const tabBarHeight = useBottomTabBarHeight();
 
-  const copyOfCartList = cartList.map(item => ({...item}));
-
-  const hasOnlyOneNonZeroQuantity = copyOfCartList.every(item => {
-    const quantities = [
-      item.quantitySize0,
-      item.quantitySize1,
-      item.quantitySize2,
-    ];
-    const nonZeroQuantities = quantities.filter(quantity => quantity > 0);
-    return nonZeroQuantities.length === 1;
-  });
-
-  const checkIfOnlyOneNonZeroQuantity = (item: any) => {
+  const checkIfOnlyOneNonZeroQuantity = (item: CartItem) => {
     const quantities = [
       item.quantitySize0,
       item.quantitySize1,

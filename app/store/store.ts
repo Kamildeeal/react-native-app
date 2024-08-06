@@ -3,34 +3,7 @@ import {persist, createJSONStorage} from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CoffeeData from '../data/CoffeeData';
 import BeansData from '../data/BeansData';
-import {Bean, Coffee, StoreState} from '../types/general';
-
-type Product = {
-  id: string;
-  name: string;
-  description: string;
-  roasted: string;
-  imagelink_square: string;
-  imagelink_portrait: string;
-  ingredients: string;
-  special_ingredient: string;
-  prices: Array<{size: string; price: string; currency: string}>;
-  average_rating: number;
-  ratings_count: string;
-  favourite: boolean;
-  type: string;
-  index: number;
-};
-
-type CartItem = {
-  product: Product;
-  quantitySize0: number;
-  size0: string;
-  quantitySize1: number;
-  size1: string;
-  quantitySize2: number;
-  size2: string;
-};
+import {Product, CartItem, StoreState} from '../types/general';
 
 export const useStore = create<StoreState>()(
   persist(
@@ -100,7 +73,7 @@ export const useStore = create<StoreState>()(
         }));
       },
 
-      toggleToFavoritesList: (product: any) => {
+      toggleToFavoritesList: (product: Product) => {
         set(state => {
           const isFavorite = state.FavoritesList.some(
             item => item && item.id === product.id,
@@ -191,7 +164,7 @@ export const useStore = create<StoreState>()(
               itemPrice +=
                 parseFloat(
                   item.product.prices.find(
-                    (p: {size: any}) => p.size === item.size0,
+                    (p: {size: string}) => p.size === item.size0,
                   )?.price || '0',
                 ) * item.quantitySize0;
             }
@@ -199,7 +172,7 @@ export const useStore = create<StoreState>()(
               itemPrice +=
                 parseFloat(
                   item.product.prices.find(
-                    (p: {size: any}) => p.size === item.size1,
+                    (p: {size: string}) => p.size === item.size1,
                   )?.price || '0',
                 ) * item.quantitySize1;
             }
@@ -207,7 +180,7 @@ export const useStore = create<StoreState>()(
               itemPrice +=
                 parseFloat(
                   item.product.prices.find(
-                    (p: {size: any}) => p.size === item.size2,
+                    (p: {size: string}) => p.size === item.size2,
                   )?.price || '0',
                 ) * item.quantitySize2;
             }

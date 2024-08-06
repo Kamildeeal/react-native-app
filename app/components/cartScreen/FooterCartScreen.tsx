@@ -1,4 +1,10 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  GestureResponderEvent,
+} from 'react-native';
 import React from 'react';
 import {
   BORDERRADIUS,
@@ -9,13 +15,8 @@ import {
 } from '../../theme/theme';
 import {useStore} from '../../store/store';
 
-interface PriceProps {
-  price: string;
-  currency: string;
-}
-
 interface PaymentFooterProps {
-  buttonPressHandler: any;
+  buttonPressHandler: (event?: GestureResponderEvent) => void;
   buttonTitle: string;
 }
 

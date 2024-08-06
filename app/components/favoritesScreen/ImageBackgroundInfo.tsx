@@ -16,11 +16,9 @@ import {
   SPACING,
 } from '../../theme/theme';
 import CustomIcon from '../CustomIcon';
-import {useStore} from '../../store/store';
 
 interface ImageBackgroundInfoProps {
-  EnableBackHandler: boolean;
-  imagelink_portrait: ImageProps;
+  imagelink_portrait: number;
   type: string;
   favourite: boolean;
   name: string;
@@ -29,9 +27,6 @@ interface ImageBackgroundInfoProps {
   average_rating: number;
   ratings_count: string;
   roasted: string;
-  BackHandler?: any;
-  product: any;
-  toggleFavorites: any;
 }
 
 const ImageBackgroundInfo = ({
@@ -44,7 +39,7 @@ const ImageBackgroundInfo = ({
   average_rating,
   ratings_count,
   roasted,
-}: any) => {
+}: ImageBackgroundInfoProps) => {
   return (
     <View>
       <ImageBackground

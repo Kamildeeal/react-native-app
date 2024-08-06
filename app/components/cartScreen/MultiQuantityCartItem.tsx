@@ -3,8 +3,14 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 import {LinearGradient} from 'react-native-linear-gradient';
 import CartQuantity from '../../components/cartScreen/CartQuantity';
 import {COLORS, BORDERRADIUS, SPACING, FONTFAMILY} from '../../theme/theme';
+import {CartItem} from '../../types/general';
 
-const MultiQuantityCartItem = ({item}: any) => {
+interface MultiQuantityCartItemProps {
+  item: CartItem;
+  isOnlyOneNonZeroQuantity?: boolean;
+}
+
+const MultiQuantityCartItem = ({item}: MultiQuantityCartItemProps) => {
   return (
     <LinearGradient
       start={{x: 0, y: 0}}
@@ -34,6 +40,7 @@ const MultiQuantityCartItem = ({item}: any) => {
               sizeIndex={0}
               size={item.size0}
               quantity={item.quantitySize0}
+              isOnlyOneNonZeroQuantity={false}
             />
           )}
           {item.size1 && (
@@ -42,6 +49,7 @@ const MultiQuantityCartItem = ({item}: any) => {
               sizeIndex={1}
               size={item.size1}
               quantity={item.quantitySize1}
+              isOnlyOneNonZeroQuantity={false}
             />
           )}
           {item.size2 && (
@@ -50,6 +58,7 @@ const MultiQuantityCartItem = ({item}: any) => {
               sizeIndex={2}
               size={item.size2}
               quantity={item.quantitySize2}
+              isOnlyOneNonZeroQuantity={false}
             />
           )}
         </View>

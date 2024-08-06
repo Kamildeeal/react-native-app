@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, ImageProps} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import ImageBackgroundInfo from '../favoritesScreen/ImageBackgroundInfo';
 import LinearGradient from 'react-native-linear-gradient';
@@ -9,24 +9,13 @@ import {
   FONTSIZE,
   SPACING,
 } from '../../theme/theme';
-import {useStore} from '../../store/store';
+import {Product} from '../../types/general';
 
 interface FavoritesItemCardProps {
-  imagelink_portrait: ImageProps;
-  name: string;
-  special_ingredient: string;
-  type: string;
-  ingredients: string;
-  average_rating: number;
-  ratings_count: string;
-  roasted: string;
-  description: string;
-  favourite: boolean;
+  product: Product;
 }
 
-const FavoritesItemCard: React.FC<any> = ({product}) => {
-  const toggleFavorites = useStore(state => state.toggleToFavoritesList);
-
+const FavoritesItemCard = ({product}: FavoritesItemCardProps) => {
   return (
     <View style={styles.CardContainer}>
       <ImageBackgroundInfo
@@ -39,7 +28,6 @@ const FavoritesItemCard: React.FC<any> = ({product}) => {
         average_rating={product.average_rating}
         ratings_count={product.ratings_count}
         roasted={product.roasted}
-        product={product}
       />
       <LinearGradient
         start={{x: 0, y: 0}}

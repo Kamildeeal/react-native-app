@@ -9,6 +9,15 @@ import {
 } from '../../theme/theme';
 import CustomIcon from '../CustomIcon';
 import {useStore} from '../../store/store';
+import {CartItem} from '../../types/general';
+
+interface CartQuantityProps {
+  item: CartItem;
+  sizeIndex: number;
+  size: string;
+  quantity: number;
+  isOnlyOneNonZeroQuantity: boolean;
+}
 
 const CartQuantity = ({
   item,
@@ -16,7 +25,7 @@ const CartQuantity = ({
   size,
   quantity,
   isOnlyOneNonZeroQuantity,
-}: any) => {
+}: CartQuantityProps) => {
   const increaseQuantity = useStore(state => state.increaseQuantity);
   const decreaseQuantity = useStore(state => state.decreaseQuantity);
   return (

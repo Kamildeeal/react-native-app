@@ -1,20 +1,22 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useCallback, useEffect} from 'react';
+import React from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../../theme/theme';
 import GradientBGIcon from './detailsHeaderCompontents.tsx/GradoemtBGIcon';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useStore} from '../../store/store';
-import {Bean, Coffee} from '../../types/general';
+import {Product, RootStackParamList} from '../../types/general';
 
 interface HeaderBarProps {
   title?: string;
-  product: Coffee | Bean;
+  product: Product;
 }
 
-const DetailHeader = ({title, product, productId}: any) => {
+const DetailHeader = ({title, product}: HeaderBarProps) => {
   const navigation =
-    useNavigation<NativeStackNavigationProp<any, 'HomeScreen'>>();
+    useNavigation<
+      NativeStackNavigationProp<RootStackParamList, 'HomeScreen'>
+    >();
   const toggleFavorites = useStore(state => state.toggleToFavoritesList);
   const favoriteList = useStore(state => state.FavoritesList);
 
@@ -38,8 +40,6 @@ const DetailHeader = ({title, product, productId}: any) => {
           />
         </TouchableOpacity>
         <Text>{title}</Text>
-        <Text style={{color: 'white'}}>{product.name}</Text>
-        <Text style={{color: 'white'}}>{product.id}</Text>
         <TouchableOpacity
           onPress={() => {
             toggleFavorites(product);

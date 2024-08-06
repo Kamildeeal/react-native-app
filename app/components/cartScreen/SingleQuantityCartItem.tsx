@@ -2,9 +2,18 @@ import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 import {LinearGradient} from 'react-native-linear-gradient';
 import CartQuantity from '../../components/cartScreen/CartQuantity';
-import {COLORS, BORDERRADIUS, SPACING, FONTFAMILY} from '../../theme/theme';
+import {COLORS, BORDERRADIUS, FONTFAMILY} from '../../theme/theme';
+import {CartItem} from '../../types/general';
 
-const SingleQuantityCartItem = ({item, isOnlyOneNonZeroQuantity}: any) => {
+interface SingleQuantityCartItemProps {
+  item: CartItem;
+  isOnlyOneNonZeroQuantity: boolean;
+}
+
+const SingleQuantityCartItem = ({
+  item,
+  isOnlyOneNonZeroQuantity,
+}: SingleQuantityCartItemProps) => {
   return (
     <LinearGradient
       start={{x: 0, y: 0}}

@@ -1,18 +1,24 @@
 import {ImageSourcePropType} from 'react-native';
 
 export type StoreState = {
-  CartList: any[];
   CoffeeList: Product[];
   BeanList: Product[];
-  CartPrice: any;
-  FavoritesList: any[];
-  OrderHistoryList: any[];
+  FavoritesList: Product[];
+  CartList: CartItem[];
+  OrderHistoryList: CartItem[];
+  CartPrice: number;
   addProductToCart: (product: Product, size: string) => void;
   removeAllProducts: () => void;
   countCartPrice: () => void;
-  toggleToFavoritesList: (product: any) => void;
+  toggleToFavoritesList: (product: Product) => void;
   increaseQuantity: (productId: string, size: string) => void;
   decreaseQuantity: (productId: string, size: string) => void;
+};
+
+// add types to screens
+export type RootStackParamList = {
+  HomeScreen: undefined;
+  DetailScreen: {item: Product};
 };
 
 export type Product = {
@@ -20,8 +26,8 @@ export type Product = {
   name: string;
   description: string;
   roasted: string;
-  imagelink_square: any;
-  imagelink_portrait: any;
+  imagelink_square: number;
+  imagelink_portrait: number;
   ingredients: string;
   special_ingredient: string;
   prices: Array<{size: string; price: string; currency: string}>;
@@ -32,14 +38,19 @@ export type Product = {
   index: number;
 };
 
-export type RootStackParamList = {
-  HomeScreen: undefined;
-  DetailScreen: {item: Product};
+export type CartItem = {
+  product: Product;
+  quantitySize0: number;
+  size0: string;
+  quantitySize1: number;
+  size1: string;
+  quantitySize2: number;
+  size2: string;
 };
 
-export type CartItem = {
-  newProduct: Product;
-  quantity: number;
+export type filteredCoffeeProps = {
+  id: number | string;
+  name: string;
 };
 
 export type Coffee = {
@@ -47,8 +58,8 @@ export type Coffee = {
   name: string;
   description: string;
   roasted: string;
-  imagelink_square: any;
-  imagelink_portrait: any;
+  imagelink_square: number;
+  imagelink_portrait: number;
   ingredients: string;
   special_ingredient: string;
   prices: Array<{size: string; price: string; currency: string}>;
@@ -64,8 +75,8 @@ export type Bean = {
   name: string;
   description: string;
   roasted: string;
-  imagelink_square: any;
-  imagelink_portrait: any;
+  imagelink_square: number;
+  imagelink_portrait: number;
   ingredients: string;
   special_ingredient: string;
   prices: Array<{size: string; price: string; currency: string}>;
@@ -74,9 +85,4 @@ export type Bean = {
   favourite: boolean;
   type: string;
   index: number;
-};
-
-export type filteredCoffeeProps = {
-  id: number | string;
-  name: string;
 };
