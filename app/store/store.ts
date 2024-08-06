@@ -100,10 +100,10 @@ export const useStore = create<StoreState>()(
         }));
       },
 
-      toggleToFavoritesList: (product: Coffee | Bean) => {
+      toggleToFavoritesList: (product: any) => {
         set(state => {
           const isFavorite = state.FavoritesList.some(
-            item => item.id === product.id,
+            item => item && item.id === product.id,
           );
 
           let updatedFavoritesList;
@@ -111,10 +111,12 @@ export const useStore = create<StoreState>()(
             // remove product from favorites
             updatedFavoritesList = state.FavoritesList.filter(
               item => item.id !== product.id,
+              console.log(updatedFavoritesList),
             );
           } else {
             // add product to favorites
             updatedFavoritesList = [...state.FavoritesList, product];
+            console.log(updatedFavoritesList);
           }
 
           return {FavoritesList: updatedFavoritesList};

@@ -10,7 +10,7 @@ export type StoreState = {
   addProductToCart: (product: Product, size: string) => void;
   removeAllProducts: () => void;
   countCartPrice: () => void;
-  toggleToFavoritesList: (product: Coffee | Bean) => void;
+  toggleToFavoritesList: (product: any) => void;
   increaseQuantity: (productId: string, size: string) => void;
   decreaseQuantity: (productId: string, size: string) => void;
 };
@@ -30,6 +30,11 @@ export type Product = {
   favourite: boolean;
   type: string;
   index: number;
+};
+
+export type RootStackParamList = {
+  HomeScreen: undefined;
+  DetailScreen: {item: Product};
 };
 
 export type CartItem = {

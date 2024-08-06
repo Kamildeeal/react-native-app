@@ -26,6 +26,7 @@ import CartQuantity from '../components/cartScreen/CartQuantity';
 import SingleQuantityCartItem from '../components/cartScreen/SingleQuantityCartItem';
 import MultiQuantityCartItem from '../components/cartScreen/MultiQuantityCartItem';
 import PaymentFooter from '../components/cartScreen/FooterCartScreen';
+import EmptyListAnimation from '../components/cartScreen/EmptyListAnimation';
 
 const CartScreen = () => {
   const cartList = useStore(state => state.CartList);
@@ -68,24 +69,33 @@ const CartScreen = () => {
         contentContainerStyle={styles.ScrollViewFlex}>
         {/* <Button title="Remove All Products" onPress={() => removeAll()} /> */}
         <HeaderBar title={`Cart`} />
-        {cartList.map(item => {
-          const isOnlyOneNonZeroQuantity = checkIfOnlyOneNonZeroQuantity(item);
-          return (
-            <ScrollView key={item.product.id}>
-              {isOnlyOneNonZeroQuantity ? (
-                <SingleQuantityCartItem
-                  item={item}
-                  isOnlyOneNonZeroQuantity={isOnlyOneNonZeroQuantity}
-                />
-              ) : (
-                <MultiQuantityCartItem
-                  item={item}
-                  isOnlyOneNonZeroQuantity={isOnlyOneNonZeroQuantity}
-                />
-              )}
-            </ScrollView>
-          );
-        })}
+
+        {cartList.length == 0 ? (
+          <EmptyListAnimation title={'Cart is Empty'} />
+        ) : (
+          <>
+            {cartList.map(item => {
+              const isOnlyOneNonZeroQuantity =
+                checkIfOnlyOneNonZeroQuantity(item);
+              return (
+                <ScrollView key={item.product.id}>
+                  {isOnlyOneNonZeroQuantity ? (
+                    <SingleQuantityCartItem
+                      item={item}
+                      isOnlyOneNonZeroQuantity={isOnlyOneNonZeroQuantity}
+                    />
+                  ) : (
+                    <MultiQuantityCartItem
+                      item={item}
+                      isOnlyOneNonZeroQuantity={isOnlyOneNonZeroQuantity}
+                    />
+                  )}
+                </ScrollView>
+              );
+            })}
+          </>
+        )}
+
         <PaymentFooter
           buttonPressHandler={undefined}
           buttonTitle={'Add to cart'}

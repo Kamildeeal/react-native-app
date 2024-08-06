@@ -55,7 +55,7 @@ const DetailScreen = () => {
       <ImageBackground
         source={item.imagelink_square as ImageSourcePropType}
         style={styles.ImageContainer}>
-        <DetailHeader product={item} />
+        <DetailHeader product={item} productId={item.id} />
         <View style={styles.OpacityBgContainer}>
           <View>
             <Text style={styles.ProductName}>{item.name}</Text>
@@ -134,7 +134,10 @@ const DetailScreen = () => {
             </View>
           </View>
           <TouchableOpacity
-            onPress={() => addProductToCart(item, selectedSize.size)}>
+            onPress={() => {
+              addProductToCart(item, selectedSize.size);
+              console.log('added');
+            }}>
             <Text style={styles.ButtonAddToCart}>Add to Cart</Text>
           </TouchableOpacity>
         </View>

@@ -1,5 +1,5 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../../theme/theme';
 import GradientBGIcon from './detailsHeaderCompontents.tsx/GradoemtBGIcon';
 import {useNavigation} from '@react-navigation/native';
@@ -12,13 +12,17 @@ interface HeaderBarProps {
   product: Coffee | Bean;
 }
 
-const DetailHeader = ({title, product}: HeaderBarProps) => {
+const DetailHeader = ({title, product, productId}: any) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<any, 'HomeScreen'>>();
   const toggleFavorites = useStore(state => state.toggleToFavoritesList);
   const favoriteList = useStore(state => state.FavoritesList);
 
-  const isFavorite = favoriteList.some(item => item.id == product.id);
+  if (!product) {
+    return;
+  }
+
+  const isFavorite = favoriteList.some(item => item && item.id == product.id);
 
   return (
     <View>
@@ -34,7 +38,13 @@ const DetailHeader = ({title, product}: HeaderBarProps) => {
           />
         </TouchableOpacity>
         <Text>{title}</Text>
-        <TouchableOpacity onPress={() => toggleFavorites(product)}>
+        <Text style={{color: 'white'}}>{product.name}</Text>
+        <Text style={{color: 'white'}}>{product.id}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            toggleFavorites(product);
+            console.log(favoriteList);
+          }}>
           <GradientBGIcon
             name="like"
             color={
