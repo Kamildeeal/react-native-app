@@ -19,6 +19,7 @@ export type StoreState = {
 export type RootStackParamList = {
   HomeScreen: undefined;
   DetailScreen: {item: Product};
+  PaymentScreen: undefined;
 };
 
 export type Product = {

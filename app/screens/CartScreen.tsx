@@ -11,13 +11,19 @@ import {
 import HeaderBar from '../components/header/HeaderBar';
 import SingleQuantityCartItem from '../components/cartScreen/SingleQuantityCartItem';
 import MultiQuantityCartItem from '../components/cartScreen/MultiQuantityCartItem';
-import PaymentFooter from '../components/cartScreen/FooterCartScreen';
+import FooterPayment from '../components/FooterPayment';
 import EmptyListAnimation from '../components/cartScreen/EmptyListAnimation';
-import {CartItem} from '../types/general';
+import {CartItem, RootStackParamList} from '../types/general';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 const CartScreen = () => {
   // const removeAll = useStore(state => state.removeAllProducts);
   const cartList = useStore(state => state.CartList);
+  const navigation =
+    useNavigation<
+      NativeStackNavigationProp<RootStackParamList, 'PaymentScreen'>
+    >();
 
   const checkIfOnlyOneNonZeroQuantity = (item: CartItem) => {
     const quantities = [
@@ -34,6 +40,10 @@ const CartScreen = () => {
   useEffect(() => {
     countCartPrice();
   }, [cartList, countCartPrice]);
+
+  const handleRouteToPayment = () => {
+    navigation.navigate('PaymentScreen');
+  };
 
   return (
     <View style={styles.mainContainer}>
@@ -69,10 +79,10 @@ const CartScreen = () => {
             })}
           </>
         )}
-
-        <PaymentFooter
-          buttonPressHandler={undefined}
-          buttonTitle={'Add to cart'}
+        <FooterPayment
+          buttonTitle={'Pay'}
+          priceText={'Total Price'}
+          handleRouteToPayment={handleRouteToPayment}
         />
       </ScrollView>
     </View>

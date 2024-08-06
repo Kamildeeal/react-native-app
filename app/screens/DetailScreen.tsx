@@ -45,7 +45,6 @@ const {height: screenHeight} = Dimensions.get('window');
 
 const DetailScreen = () => {
   const route = useRoute<RouteProp<RouteParams, 'params'>>();
-
   const {item} = route.params;
   const [selectedSize, setSelectedSize] = useState(item.prices[0]);
   const addProductToCart = useStore(state => state.addProductToCart);
@@ -224,6 +223,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 80,
     paddingVertical: 15,
     fontFamily: FONTFAMILY.poppins_semibold,
+    fontSize: 18,
     borderRadius: 20,
   },
   OpacityBgContainer: {

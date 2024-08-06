@@ -12,17 +12,19 @@ import {
   FONTFAMILY,
   FONTSIZE,
   SPACING,
-} from '../../theme/theme';
-import {useStore} from '../../store/store';
+} from '../theme/theme';
+import {useStore} from '../store/store';
 
 interface PaymentFooterProps {
-  buttonPressHandler: (event?: GestureResponderEvent) => void;
   buttonTitle: string;
+  priceText: string;
+  handleRouteToPayment: () => void;
 }
 
-const PaymentFooter = ({
-  buttonPressHandler,
+const FooterPayment = ({
   buttonTitle,
+  priceText,
+  handleRouteToPayment,
 }: PaymentFooterProps) => {
   const cartPrice = useStore(state => state.CartPrice);
 
@@ -33,12 +35,18 @@ const PaymentFooter = ({
   return (
     <View style={styles.PriceFooter}>
       <View style={styles.PriceContainer}>
-        <Text style={styles.PriceTitle}>Price</Text>
-        <Text style={styles.PriceText}>
-          <Text style={styles.Price}>${displayPrice}</Text>
-        </Text>
+        <Text style={styles.PriceTitle}>{priceText}</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text style={styles.Price}>$</Text>
+          <Text style={styles.PriceText}>{displayPrice}</Text>
+        </View>
       </View>
-      <TouchableOpacity style={styles.PayButton} onPress={buttonPressHandler}>
+      <TouchableOpacity style={styles.PayButton} onPress={handleRouteToPayment}>
         <Text style={styles.ButtonText}>{buttonTitle}</Text>
       </TouchableOpacity>
     </View>
@@ -49,13 +57,14 @@ const styles = StyleSheet.create({
   PriceFooter: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     gap: SPACING.space_20,
-    padding: SPACING.space_24,
+    paddingVertical: SPACING.space_24,
     marginBottom: 42,
   },
   PriceContainer: {
     alignItems: 'center',
+    alignContent: 'flex-start',
     width: 100,
   },
   PriceTitle: {
@@ -65,11 +74,14 @@ const styles = StyleSheet.create({
   },
   PriceText: {
     fontFamily: FONTFAMILY.poppins_semibold,
-    fontSize: FONTSIZE.size_24,
-    color: COLORS.primaryOrangeHex,
+    fontSize: 22,
+    color: COLORS.primaryWhiteHex,
   },
   Price: {
-    color: COLORS.primaryWhiteHex,
+    fontFamily: FONTFAMILY.poppins_semibold,
+    fontSize: 22,
+    color: COLORS.primaryOrangeHex,
+    marginRight: 4,
   },
   PayButton: {
     backgroundColor: COLORS.primaryOrangeHex,
@@ -86,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PaymentFooter;
+export default FooterPayment;
