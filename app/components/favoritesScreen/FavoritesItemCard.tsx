@@ -28,6 +28,7 @@ const FavoritesItemCard = ({product}: FavoritesItemCardProps) => {
         average_rating={product.average_rating}
         ratings_count={product.ratings_count}
         roasted={product.roasted}
+        product={product}
       />
       <LinearGradient
         start={{x: 0, y: 0}}

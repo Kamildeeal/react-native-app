@@ -16,6 +16,8 @@ import {
   SPACING,
 } from '../../theme/theme';
 import CustomIcon from '../CustomIcon';
+import {Product} from '../../types/general';
+import {useStore} from '../../store/store';
 
 interface ImageBackgroundInfoProps {
   imagelink_portrait: number;
@@ -27,6 +29,7 @@ interface ImageBackgroundInfoProps {
   average_rating: number;
   ratings_count: string;
   roasted: string;
+  product: Product;
 }
 
 const ImageBackgroundInfo = ({
@@ -39,20 +42,26 @@ const ImageBackgroundInfo = ({
   average_rating,
   ratings_count,
   roasted,
+  product,
 }: ImageBackgroundInfoProps) => {
+  const toggleFavorites = useStore(state => state.toggleToFavoritesList);
+  const favoriteList = useStore(state => state.FavoritesList);
+
+  const isFavorite = favoriteList.some(item => item && item.id == product.id);
+
   return (
     <View>
       <ImageBackground
         source={imagelink_portrait}
         style={styles.ItemBackgroundImage}>
         <View style={styles.ImageHeaderBarContainerWithoutBack}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => toggleFavorites(product)}>
             <CustomIcon
               name="like"
               color={
-                favourite ? COLORS.primaryRedHex : COLORS.primaryLightGreyHex
+                isFavorite ? COLORS.primaryRedHex : COLORS.primaryLightGreyHex
               }
-              size={FONTSIZE.size_16}
+              size={FONTSIZE.size_24}
             />
           </TouchableOpacity>
         </View>

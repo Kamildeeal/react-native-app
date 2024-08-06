@@ -55,7 +55,7 @@ const DetailScreen = () => {
       <ImageBackground
         source={item.imagelink_square as ImageSourcePropType}
         style={styles.ImageContainer}>
-        <DetailHeader product={item} productId={item.id} />
+        <DetailHeader product={item} />
         <View style={styles.OpacityBgContainer}>
           <View>
             <Text style={styles.ProductName}>{item.name}</Text>

@@ -43,7 +43,6 @@ const DetailHeader = ({title, product}: HeaderBarProps) => {
         <TouchableOpacity
           onPress={() => {
             toggleFavorites(product);
-            console.log(favoriteList);
           }}>
           <GradientBGIcon
             name="like"

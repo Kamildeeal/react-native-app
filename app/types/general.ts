@@ -26,8 +26,8 @@ export type Product = {
   name: string;
   description: string;
   roasted: string;
-  imagelink_square: number;
-  imagelink_portrait: number;
+  imagelink_square: number | any;
+  imagelink_portrait: number | any;
   ingredients: string;
   special_ingredient: string;
   prices: Array<{size: string; price: string; currency: string}>;
