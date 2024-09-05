@@ -5,7 +5,7 @@ export type StoreState = {
   BeanList: Product[];
   FavoritesList: Product[];
   CartList: CartItem[];
-  OrderHistoryList: CartItem[];
+  OrderHistoryList: OrderHistoryItem[];
   CartPrice: number;
   addProductToCart: (product: Product, size: string) => void;
   removeAllProducts: () => void;
@@ -21,6 +21,12 @@ export type RootStackParamList = {
   DetailScreen: {item: Product};
   PaymentScreen: undefined;
 };
+
+export interface OrderHistoryItem {
+  OrderDate: string;
+  CartList: CartItem[];
+  CartListPrice: string;
+}
 
 export type Product = {
   id: string;

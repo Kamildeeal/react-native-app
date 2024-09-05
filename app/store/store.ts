@@ -190,6 +190,50 @@ export const useStore = create<StoreState>()(
           return {CartPrice: cartPrice};
         });
       },
+      addToOrderHistory: () => {
+        set(state => {
+          const totalCartPrice = state.CartList.reduce(
+            (acc, item) =>
+              acc +
+              item.product.prices.reduce((priceAcc, price) => {
+                if (item.size0 === price.size) {
+                  return (
+                    priceAcc + parseFloat(price.price) * item.quantitySize0
+                  );
+                }
+                if (item.size1 === price.size) {
+                  return (
+                    priceAcc + parseFloat(price.price) * item.quantitySize1
+                  );
+                }
+                if (item.size2 === price.size) {
+                  return (
+                    priceAcc + parseFloat(price.price) * item.quantitySize2
+                  );
+                }
+                return priceAcc;
+              }, 0),
+            0,
+          ).toFixed(2);
+
+          const newOrder = {
+            OrderDate:
+              new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
+            CartList: [...state.CartList],
+            CartListPrice: totalCartPrice,
+          };
+
+          return {
+            OrderHistoryList: [newOrder, ...state.OrderHistoryList],
+            CartList: [],
+          };
+        });
+      },
+      removeOrderHistory: () => {
+        set(() => ({
+          OrderHistoryList: [],
+        }));
+      },
     }),
     {
       name: 'coffee-app',

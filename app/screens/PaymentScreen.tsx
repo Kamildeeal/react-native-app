@@ -24,16 +24,16 @@ import LottieView from 'lottie-react-native';
 
 const PaymentScreen = ({navigation, route}: any) => {
   const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
-  const addToOrderHistoryListFromCart = useStore(
-    (state: any) => state.addToOrderHistoryListFromCart,
-  );
+  const addToOrderHistory = useStore((state: any) => state.addToOrderHistory);
 
+  const orderHistoryList = useStore((state: any) => state.OrderHistoryList);
   const [paymentMode, setPaymentMode] = useState('Credit Card');
   const [showAnimation, setShowAnimation] = useState(false);
 
   const handlePayment = () => {
     setShowAnimation(true);
-    // addToOrderHistoryListFromCart();
+    addToOrderHistory();
+    console.log(orderHistoryList);
     // calculateCartPrice();
     setTimeout(() => {
       setShowAnimation(false);
