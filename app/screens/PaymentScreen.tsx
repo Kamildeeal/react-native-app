@@ -22,29 +22,6 @@ import CustomIcon from '../components/CustomIcon';
 import {useStore} from '../store/store';
 import LottieView from 'lottie-react-native';
 
-const PaymentList = [
-  {
-    name: 'Wallet',
-    icon: 'icon',
-    isIcon: true,
-  },
-  {
-    name: 'Google Pay',
-    icon: require('../assets/app_images/gpay.png'),
-    isIcon: false,
-  },
-  {
-    name: 'Apple Pay',
-    icon: require('../assets/app_images/applepay.png'),
-    isIcon: false,
-  },
-  {
-    name: 'Amazon Pay',
-    icon: require('../assets/app_images/amazonpay.png'),
-    isIcon: false,
-  },
-];
-
 const PaymentScreen = ({navigation, route}: any) => {
   const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
   const addToOrderHistoryListFromCart = useStore(
@@ -159,20 +136,10 @@ const PaymentScreen = ({navigation, route}: any) => {
               </View>
             </View>
           </TouchableOpacity>
-          {PaymentList.map((data: any) => (
-            <TouchableOpacity
-              key={data.name}
-              onPress={() => {
-                setPaymentMode(data.name);
-              }}>
-              <PaymentMethod
-                paymentMode={paymentMode}
-                name={data.name}
-                icon={data.icon}
-                isIcon={data.isIcon}
-              />
-            </TouchableOpacity>
-          ))}
+          <PaymentMethod
+            paymentMode={paymentMode}
+            setPaymentMode={setPaymentMode}
+          />
         </View>
       </ScrollView>
 
