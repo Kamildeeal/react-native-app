@@ -140,6 +140,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
             </View>
           ))}
         </ScrollView>
+
         {/* Coffe FlatList */}
         <FlatList
           horizontal
@@ -164,6 +165,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
             );
           }}
         />
+
         {/* Bean FlatList */}
         <Text style={styles.CoffeeBeansTitle}>Coffee Beans</Text>
         <FlatList

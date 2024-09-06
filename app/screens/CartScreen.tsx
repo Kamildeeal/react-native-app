@@ -1,4 +1,4 @@
-import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
+import {Alert, ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {useStore} from '../store/store';
 import {
@@ -42,7 +42,15 @@ const CartScreen = () => {
   }, [cartList, countCartPrice]);
 
   const handleRouteToPayment = () => {
-    navigation.navigate('PaymentScreen');
+    if (cartList.length > 1) {
+      navigation.navigate('PaymentScreen');
+    } else {
+      Alert.alert(
+        'Empty Cart',
+        'Please add items to your cart before proceeding to payment.',
+        [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+      );
+    }
   };
 
   return (

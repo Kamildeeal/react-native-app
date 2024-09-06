@@ -216,9 +216,32 @@ export const useStore = create<StoreState>()(
             0,
           ).toFixed(2);
 
+          const getDayWithSuffix = (day: any) => {
+            if (day > 3 && day < 21) return day + 'th';
+            switch (day % 10) {
+              case 1:
+                return day + 'st';
+              case 2:
+                return day + 'nd';
+              case 3:
+                return day + 'rd';
+              default:
+                return day + 'th';
+            }
+          };
+
+          const formatOrderDate = (date: any) => {
+            const day = getDayWithSuffix(date.getDate());
+            const month = date.toLocaleString('en-US', {month: 'long'}); // full name of month
+            const time = date.toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            });
+            return `${day} ${month} ${time}`;
+          };
+
           const newOrder = {
-            OrderDate:
-              new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
+            OrderDate: formatOrderDate(new Date()),
             CartList: [...state.CartList],
             CartListPrice: totalCartPrice,
           };
