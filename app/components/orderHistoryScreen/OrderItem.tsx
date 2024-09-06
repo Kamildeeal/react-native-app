@@ -1,9 +1,18 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {COLORS, FONTFAMILY, FONTSIZE} from '../../theme/theme';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../types/general';
 
-const OrderItem = ({item, itemIndex, order}: any) => {
+const OrderItem = ({itemToDisplay, itemIndex, order}: any) => {
+  const navigation =
+    useNavigation<
+      NativeStackNavigationProp<RootStackParamList, 'DetailScreen'>
+    >();
+
+  const item = itemToDisplay.product;
   return (
     <LinearGradient
       start={{x: 0, y: 0}}
@@ -12,101 +21,111 @@ const OrderItem = ({item, itemIndex, order}: any) => {
       style={styles.singleCartContainer}>
       {/* upper view */}
       <View key={itemIndex} style={styles.cartItem}>
-        <View style={styles.productInfoContainer}>
+        <Pressable
+          style={styles.productInfoContainer}
+          onPress={() => {
+            navigation.navigate('DetailScreen', {item});
+          }}>
           <Image
-            source={item.product.imagelink_square}
+            source={itemToDisplay.product.imagelink_square}
             style={styles.cartItemImage}
           />
           <View style={{marginRight: 'auto', marginLeft: 12}}>
-            <Text style={styles.CardTitle}>{item.product.name}</Text>
+            <Text style={styles.CardTitle}>{itemToDisplay.product.name}</Text>
             <Text style={styles.CardSubtitle}>
-              {item.product.special_ingredient}
+              {itemToDisplay.product.special_ingredient}
             </Text>
           </View>
           <Text style={styles.CardCurrency}>
             $<Text style={styles.CardPrice}> {order.CartListPrice}</Text>
           </Text>
-        </View>
+        </Pressable>
 
         {/* bottom view */}
         <View style={{marginTop: 8}}>
-          {item.quantitySize0 > 0 && (
+          {itemToDisplay.quantitySize0 > 0 && (
             <View style={[styles.productInfoContainer, {marginTop: 10}]}>
               <View style={styles.sizePriceDetailsContainer}>
                 <Text style={styles.sizeContainer}>
                   <Text style={{fontSize: 15, fontWeight: '600'}}>
-                    {item.size0}
+                    {itemToDisplay.size0}
                   </Text>
                 </Text>
                 <View style={styles.verticalLine} />
                 <View style={styles.priceContainer}>
                   <Text style={styles.priceOrnage}>$ </Text>
                   <Text style={styles.price}>
-                    {item.product.prices[0].price}
+                    {itemToDisplay.product.prices[0].price}
                   </Text>
                 </View>
               </View>
 
               <Text style={styles.price}>
-                <Text style={styles.priceOrnage}>X</Text> {item.quantitySize0}
+                <Text style={styles.priceOrnage}>X</Text>{' '}
+                {itemToDisplay.quantitySize0}
               </Text>
               <Text style={styles.priceOrnage}>
                 {(
-                  item.quantitySize0 * parseFloat(item.product.prices[0].price)
+                  itemToDisplay.quantitySize0 *
+                  parseFloat(itemToDisplay.product.prices[0].price)
                 ).toFixed(2)}
               </Text>
             </View>
           )}
-          {item.quantitySize1 > 0 && (
+          {itemToDisplay.quantitySize1 > 0 && (
             <View style={[styles.productInfoContainer, {marginTop: 10}]}>
               <View style={styles.sizePriceDetailsContainer}>
                 <Text style={styles.sizeContainer}>
                   <Text style={{fontSize: 15, fontWeight: '600'}}>
-                    {item.size1}
+                    {itemToDisplay.size1}
                   </Text>
                 </Text>
                 <View style={styles.verticalLine} />
                 <View style={styles.priceContainer}>
                   <Text style={styles.priceOrnage}>$ </Text>
                   <Text style={styles.price}>
-                    {item.product.prices[1].price}
+                    {itemToDisplay.product.prices[1].price}
                   </Text>
                 </View>
               </View>
 
               <Text style={styles.price}>
-                <Text style={styles.priceOrnage}>X</Text> {item.quantitySize1}
+                <Text style={styles.priceOrnage}>X</Text>{' '}
+                {itemToDisplay.quantitySize1}
               </Text>
               <Text style={styles.priceOrnage}>
                 {(
-                  item.quantitySize1 * parseFloat(item.product.prices[1].price)
+                  itemToDisplay.quantitySize1 *
+                  parseFloat(itemToDisplay.product.prices[1].price)
                 ).toFixed(2)}
               </Text>
             </View>
           )}
-          {item.quantitySize2 > 0 && (
+          {itemToDisplay.quantitySize2 > 0 && (
             <View style={[styles.productInfoContainer, {marginTop: 10}]}>
               <View style={styles.sizePriceDetailsContainer}>
                 <Text style={styles.sizeContainer}>
                   <Text style={{fontSize: 15, fontWeight: '600'}}>
-                    {item.size2}
+                    {itemToDisplay.size2}
                   </Text>
                 </Text>
                 <View style={styles.verticalLine} />
                 <View style={styles.priceContainer}>
                   <Text style={styles.priceOrnage}>$ </Text>
                   <Text style={styles.price}>
-                    {item.product.prices[2].price}
+                    {itemToDisplay.product.prices[2].price}
                   </Text>
                 </View>
               </View>
 
               <Text style={styles.price}>
-                <Text style={styles.priceOrnage}>X</Text> {item.quantitySize2}
+                <Text style={styles.priceOrnage}>X</Text>{' '}
+                {itemToDisplay.quantitySize2}
               </Text>
               <Text style={styles.priceOrnage}>
                 {(
-                  item.quantitySize2 * parseFloat(item.product.prices[2].price)
+                  itemToDisplay.quantitySize2 *
+                  parseFloat(itemToDisplay.product.prices[2].price)
                 ).toFixed(2)}
               </Text>
             </View>

@@ -115,4 +115,8 @@ dependencies {
     }
 }
 
+project.ext.react = [
+    enableHermes: true,  // <- Set to true to enable Hermes
+]
+
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

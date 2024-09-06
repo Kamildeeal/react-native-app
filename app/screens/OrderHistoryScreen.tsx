@@ -1,6 +1,4 @@
 import {
-  Button,
-  Image,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -19,7 +17,6 @@ import {
   SPACING,
 } from '../theme/theme';
 import HeaderBar from '../components/header/HeaderBar';
-import LinearGradient from 'react-native-linear-gradient';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import OrderItem from '../components/orderHistoryScreen/OrderItem';
 
@@ -64,7 +61,11 @@ const OrderHistoryScreen = () => {
               </View>
 
               {order.CartList.map((item, itemIndex) => (
-                <OrderItem item={item} itemIndex={itemIndex} order={order} />
+                <OrderItem
+                  itemToDisplay={item}
+                  itemIndex={itemIndex}
+                  order={order}
+                />
               ))}
             </View>
           ))
